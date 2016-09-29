@@ -58,10 +58,13 @@
   notify:
     - restart tinc
 
+- name: get my public IP
+  ipify_facts: api_url=http://api.ipify.org
+
 - name: ensure tinc hosts file binds to physical ip address
   lineinfile: >
     dest=/etc/tinc/{{ netname }}/hosts/{{ inventory_hostname }}
-    line="Address = {{ physical_ip }}"
+    line="Address = {{ ipify_public_ip }}"
     create=yes
   notify:
     - restart tinc
